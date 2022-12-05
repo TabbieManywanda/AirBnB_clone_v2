@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import shlex
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -113,6 +114,27 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def parser(self, args):
+        """Creates a dictionary from a list of arguments"""
+        new_dict = {}
+        for arg in args:
+            kvp = arg.split("#",1)#Splits the argument into name and value
+            key = kvp[0]
+            value = kvp[1]
+            if value[0] == value[-1] == '"':
+                value = shlex.split(value)[0].replace('_',' ')
+            else:
+                try:
+                    value = int(value)
+                except:
+                    try:
+                        value = float(value)
+                    except:
+                        continue
+            new_dict[key] = value
+        return new_dict
+
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
@@ -121,7 +143,10 @@ class HBNBCommand(cmd.Cmd):
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        if args[0] in HBNBCommand.classes:
+            new_dict = self.__parser(args[1:])
+            new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()
