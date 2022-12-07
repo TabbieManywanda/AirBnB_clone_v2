@@ -12,7 +12,7 @@ place_amenity = Table('place_amenity', Base.metadata,
         Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False))
 
 store = 'HBNB_TYPE_STORAGE'
-if store in environ.keys() and environ['HBNB_TYPE_STORAGE'] == 'db':
+if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
     class Place(BaseModel, Base):
         """ A place to stay """
         __tablename__ = 'places'
