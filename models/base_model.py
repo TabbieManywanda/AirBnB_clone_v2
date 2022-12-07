@@ -10,12 +10,13 @@ import os
 Base = declarative_base()
 
 
-
+store = 'HBNB_TYPE_STORAGE'
 class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), unique=True, primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
+        id = Column(String(60), unique=True, primary_key=True, nullable=False)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -51,6 +52,9 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if '_sa_instance_state' in dictionary.keys():
+            del dictionary['_sa_instance_state']
+            models.storage.save()
         return dictionary
 
     def delete(self):
