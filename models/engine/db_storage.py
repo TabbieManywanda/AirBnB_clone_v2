@@ -39,7 +39,7 @@ class DBStorage:
         if cls is None:
             for x in self.objects:
                 for instance in self.__session.query(eval(x)):
-                    storage[intance.id] = instance
+                    storage[instance.id] = instance
         return storage
 
     def new(self, obj):
