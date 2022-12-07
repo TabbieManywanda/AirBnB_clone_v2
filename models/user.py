@@ -9,3 +9,5 @@ class User(BaseModel, Base):
     password = ''
     first_name = ''
     last_name = ''
+    places = relationship('Place', backref='user')
+    reviews = relationship('Review', backref='user')
