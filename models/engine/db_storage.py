@@ -5,11 +5,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
-import models
+from models import *
 import os
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
 
 
 class DBStorage:
@@ -17,15 +14,16 @@ class DBStorage:
     __engine = None
     __session = None
     objects = ["User", "State", "City", "Amenity", "Place", "Review"]
-    user = os.environ['HBNB_MYSQL_USER']
-    passwd = os.environ['HBNB_MYSQL_PWD']
-    host = os.environ['HBNB_MYSQL_HOST']
-    db = os.environ['HBNB_MYSQL_HOST']
 
     def __init__(self):
         '''Create engine'''
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}:3306/{}'.format(
-            self.user, self.passwd, self.host, self.db), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://' +
+                                       os.environ['HBNB_MYSQL_USER'] + 
+                                       ':' + os.environ['HBNB_MYSQL_PWD'] + 
+                                       '@' + os.environ['HBNB_MYSQL_HOST'] + 
+                                       ':3306/' + 
+                                       os.environ['HBNB_MYSQL_DB'], 
+                                       pool_pre_ping=True)
 
         try:
             if os.environ['HBNB_ENV'] == "test":
@@ -40,6 +38,11 @@ class DBStorage:
             for x in self.objects:
                 for instance in self.__session.query(eval(x)):
                     storage[intance.id] = instance
+        else:
+            if cls not in self.objects:
+                return
+            for instance in self.__session.query(eval(cls)):
+                storage[instance.id] = instance
         return storage
 
     def new(self, obj):
