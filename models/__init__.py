@@ -18,4 +18,4 @@ if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
     storage.reload()
 else:
     storage = FileStorage()
-    storage.reload()
+storage.reload()
