@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
 from models import *
+from models.base_model import Base
 import os
 
 
@@ -37,7 +38,7 @@ class DBStorage:
         if cls is None:
             for x in self.objects:
                 for instance in self.__session.query(eval(x)):
-                    storage[intance.id] = instance
+                    storage[instance.id] = instance
         else:
             if cls not in self.objects:
                 return
