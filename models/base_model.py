@@ -8,33 +8,50 @@ import models
 import os
 
 Base = declarative_base()
+
+
 store = 'HBNB_TYPE_STORAGE'
+
+
 class BaseModel:
     """A base class for all hbnb models"""
     if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
-        id = Column(String(60), unique=True, primary_key=True, nullable=False)
-        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        id = Column(
+                String(60), unique=True, primary_key=True,
+                nullable=False, default=str(uuid.uuid4()))
+        created_at = Column(
+                DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(
+                DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        if not kwargs:
+        s = 'HBNB_TYPE_STORAGE'
+        if kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+            for k, v in kwargs.items():
+                if k == 'created_at' or k == 'updated_at':
+                    v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
+                if k != "__class__":
+                    setattr(self, k, v)
+        elif s not in os.environ.keys() or
+        os.environ['HBNB_TYPE_STORAGE'] != 'db':
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            self.id = str(uuid.uuid4())
 
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+
+    def __repr__(self):
+        '''returns repr'''
+        return self.__str__()
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -44,10 +61,8 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary = dict(self.__dict__)
+        dictionary['__class__'] = str(type(self).__name__)
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary.keys():
