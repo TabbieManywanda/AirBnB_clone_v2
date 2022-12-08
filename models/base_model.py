@@ -35,8 +35,8 @@ class BaseModel:
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 if k != "__class__":
                     setattr(self, k, v)
-        elif s not in os.environ.keys() or
-        os.environ['HBNB_TYPE_STORAGE'] != 'db':
+        elif s not in os.environ.keys() or os.environ[
+                'HBNB_TYPE_STORAGE'] != 'db':
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
