@@ -5,7 +5,7 @@ from models import *
 from sqlalchemy import Column, Integer, String
 import models
 from sqlalchemy.orm import relationship, backref
-from os import getenv
+import os
 
 store = 'HBNB_TYPE_STORAGE'
 if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
