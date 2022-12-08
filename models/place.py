@@ -5,7 +5,8 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Table, Float
 from sqlalchemy.orm import relationship
 import os
 from uuid import uuid4
-
+import models
+from models.review import Review
 
 place_amenity = Table('place_amenity', Base.metadata,
         Column('place_id', String(60), ForeignKey('places.id'), nullable=False),
