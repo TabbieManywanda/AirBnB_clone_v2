@@ -167,8 +167,8 @@ class HBNBCommand(cmd.Cmd):
         c_id = new[2]
 
         # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        # if c_id and ' ' in c_id:
+        #     c_id = c_id.partition(' ')[0]
 
         if not c_name:
             print("** class name missing **")
