@@ -9,9 +9,7 @@ import os
 
 Base = declarative_base()
 
-
 store = 'HBNB_TYPE_STORAGE'
-
 
 class BaseModel:
     """A base class for all hbnb models"""
