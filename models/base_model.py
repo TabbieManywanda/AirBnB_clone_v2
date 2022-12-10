@@ -7,9 +7,14 @@ from sqlalchemy import Column, Integer, String, DateTime
 import models
 import os
 
-Base = declarative_base()
+#Base = declarative_base()
 
-store = 'HBNB_TYPE_STORAGE'
+store = 'HBNB_TYPE_STORAGE' 
+
+if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 class BaseModel:
     """A base class for all hbnb models"""
