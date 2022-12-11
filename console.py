@@ -118,37 +118,41 @@ class HBNBCommand(cmd.Cmd):
         """Creates a dictionary from a list of arguments"""
         new_dict = {}
         for arg in args:
-            kvp = arg.split("#",1)#Splits the argument into name and value
-            key = kvp[0]
-            value = kvp[1]
-            if value[0] == value[-1] == '"':
-                value = shlex.split(value)[0].replace('_',' ')
-            else:
-                try:
-                    value = int(value)
-                except:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
                     try:
-                        value = float(value)
+                        value = int(value)
                     except:
-                        continue
-            new_dict[key] = value
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_dict[key] = value
         return new_dict
 
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        if not args:
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
-            return False
+            return
         # elif args not in HBNBCommand.classes:
         #     print("** class doesn't exist **")
         #     return
-
         if args[0] in HBNBCommand.classes:
             new_dict = self.parser(args[1:])
             new_instance = HBNBCommand.classes[args[0]](**new_dict)
+        else:
+            print("**class name doesn't exist**")
+            return
         storage.save()
-        #print(new_instance.id)
+        print(new_instance.id)
         storage.save()
 
     def help_create(self):
@@ -163,8 +167,8 @@ class HBNBCommand(cmd.Cmd):
         c_id = new[2]
 
         # guard against trailing args
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
+        # if c_id and ' ' in c_id:
+        #     c_id = c_id.partition(' ')[0]
 
         if not c_name:
             print("** class name missing **")
