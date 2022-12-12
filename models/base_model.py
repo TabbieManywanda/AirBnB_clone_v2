@@ -18,18 +18,18 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
-        id = Column(
-                String(60), unique=True, primary_key=True,
-                nullable=False, default=str(uuid.uuid4()))
-        created_at = Column(
-                DateTime, nullable=False, default=datetime.utcnow())
-        updated_at = Column(
-                DateTime, nullable=False, default=datetime.utcnow())
+
+    id = Column(
+            String(60), unique=True, primary_key=True,
+            nullable=False, default=str(uuid.uuid4()))
+    created_at = Column(
+            DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(
+            DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        s = 'HBNB_TYPE_STORAGE'
+        #s = 'HBNB_TYPE_STORAGE'
         if kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -38,8 +38,7 @@ class BaseModel:
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 if k != "__class__":
                     setattr(self, k, v)
-        elif s not in os.environ.keys() or os.environ[
-                'HBNB_TYPE_STORAGE'] != 'db':
+        elif models.store != 'db':
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
