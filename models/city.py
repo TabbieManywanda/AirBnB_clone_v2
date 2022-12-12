@@ -8,22 +8,21 @@ from uuid import uuid4
 
 
 store = 'HBNB_TYPE_STORAGE'
-if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
-    class City(BaseModel, Base):
-        """ The city class, contains state ID and name """
-
+class City(BaseModel, Base):
+    """ The city class, contains state ID and name """
+    if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
         __tablename__ = 'cities'
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         name = Column(String(128), nullable=False)
         places = relationship('Place', backref='cities', cascade='all, delete')
 
-        def __init__(self, **kwargs):
-            '''Init'''
-            setattr(self, 'id', str(uuid4()))
-            for x, y in kwargs.items():
-                setattr(self, x, y)
-else:
-    class City(BaseModel):
+    else:
         """city class"""
         state_id = ''
         name = ''
+
+    def __init__(self, **kwargs):
+        '''Init'''
+        setattr(self, 'id', str(uuid4()))
+        for x, y in kwargs.items():
+            setattr(self, x, y)
