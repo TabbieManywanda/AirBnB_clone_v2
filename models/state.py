@@ -11,17 +11,17 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship(
-            "City", backref="state", cascade='all, delete')
+    if models.store == "db":
+        cities = relationship("City", backref="state", cascade='all, delete')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    @property
-    def cities(self):
-        all_cities = models.storage.all("City")
-        tmp = []
-        for x in all_cities:
-            if all_cities[x].state_id == self.id:
-                tmp.append(all_cities[x])
-        return tmp
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    else:
+        @property
+        def cities(self):
+            all_cities = models.storage.all("City")
+            tmp = []
+            for x in all_cities:
+                if all_cities[x].state_id == self.id:
+                    tmp.append(all_cities[x])
+            return tmp

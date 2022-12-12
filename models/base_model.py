@@ -31,17 +31,20 @@ class BaseModel:
         """Instatntiates a new model"""
         #s = 'HBNB_TYPE_STORAGE'
         if kwargs:
-            if "id" not in kwargs.keys:
+            if "id" not in kwargs.keys():
                 self.id = str(uuid.uuid4())
-            if "created_at" not in kwargs.keys:
+            if "created_at" not in kwargs.keys():
                 self.created_at = datetime.now()
-            if "updated_at" not in kwargs.keys:
+            if "updated_at" not in kwargs.keys():
                 self.updated_at = datetime.now()
-            for key, value in kwargs:
+            for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != '__class__':
                     setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the instance"""
