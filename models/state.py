@@ -11,12 +11,9 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    if models.store == "db":
-        cities = relationship("City", backref="state", cascade='all, delete')
+    cities = relationship("City", backref="state", cascade='all, delete')
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    else:
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
             all_cities = models.storage.all("City")
