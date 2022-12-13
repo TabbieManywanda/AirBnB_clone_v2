@@ -9,12 +9,13 @@ import os
 
 Base = declarative_base()
 
-# store = 'HBNB_TYPE_STORAGE' 
+# store = 'HBNB_TYPE_STORAGE'
 
 # if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
 #     Base = declarative_base()
 # else:
 #     Base = object
+
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -29,7 +30,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        #s = 'HBNB_TYPE_STORAGE'
+        # s = 'HBNB_TYPE_STORAGE'
         if kwargs:
             if "id" not in kwargs.keys():
                 self.id = str(uuid.uuid4())
@@ -50,10 +51,6 @@ class BaseModel:
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
-
-    def __repr__(self):
-        '''returns repr'''
-        return self.__str__()
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
