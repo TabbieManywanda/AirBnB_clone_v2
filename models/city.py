@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship, backref
 import os
-from uuid import uuid4
 
 
 store = 'HBNB_TYPE_STORAGE'
+
+
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
