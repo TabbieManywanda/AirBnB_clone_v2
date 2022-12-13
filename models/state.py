@@ -7,6 +7,7 @@ import models
 from sqlalchemy.orm import relationship, backref
 import os
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
