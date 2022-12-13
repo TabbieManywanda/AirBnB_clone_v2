@@ -39,6 +39,7 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
+            """getter"""
             all_review = models.storage.all(Review)
             lists = []
             keys = all_review.items()
