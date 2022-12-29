@@ -21,33 +21,33 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
-        storage = {}
-        for x in FileStorage.__objects:
-            object_cls = FileStorage.__objects[x].__class__.__name__
-            if cls == object_cls:
-                storage[x] = FileStorage.__objects[x]
-        return storage
+        if cls is not None:
+            #return FileStorage.__objects
+            storage = {}
+            for key, value in self.__objects.items:
+                if cls == type(value):
+                    storage[key] = value
+            return storage
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
         if obj is not None:
-            FileStorage.__objects[obj.id] = obj
+            self.__objects[obj.id] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
         store = {}
-        for key in FileStorage.__objects.keys():
-            store[key] = FileStorage.__objects[key].to_json()
-        with open(FileStorage.__file_path, 'w') as f:
+        for key in self.__objects.keys():
+            store[key] = self.__objects[key].to_json()
+        with open(self.__file_path, 'w') as f:
             f.write(json.dumps(store))
 
     def update(self, cls, obj_id, key, new_value):
         '''updates'''
-        if obj_id not in FileStorage.__objects:
+        if obj_id not in self.__objects:
             return 0
-        obj = FileStorage.__objects[obj_id]
+        obj = self.__objects[obj_id]
         setattr(obj, key, new_value)
         return 1
 
@@ -66,7 +66,7 @@ class FileStorage:
         """Deletes an object from __objects"""
         if obj is None:
             return
-        FileStorage.__objects.pop(obj.id, 0)
+        self.__objects.pop(obj.id, 0)
 
     def close(self):
         '''close'''
