@@ -29,11 +29,10 @@ def python_is_fun(text):
     return 'Python %s' %text.replace('_', ' ')
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     """Returns a n if its an int"""
-    if type(n) is int:
-        return '%d is a number' %n
+    return '%d is a number' %n
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 5000)
