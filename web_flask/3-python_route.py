@@ -22,11 +22,10 @@ def c_is_fun(text):
     return 'C %s' %text.replace('_', ' ')
 
 
+@app.route('/python/', defaults={'text':'is cool'})
 @app.route('/python/<text>',strict_slashes=False)
 def python_is_fun(text):
     """Returns python followed by the value of text"""
-    if not len(text):
-        text = "is cool"
     return 'Python %s' %text.replace('_', ' ')
 
 
