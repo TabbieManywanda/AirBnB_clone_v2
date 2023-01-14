@@ -20,15 +20,15 @@ class DBStorage:
     def __init__(self):
         '''Create engine'''
         self.__engine = create_engine(
-                'mysql+mysqldb://' + os.environ['HBNB_MYSQL_USER'] +
-                ':' + os.environ['HBNB_MYSQL_PWD'] +
-                '@' + os.environ['HBNB_MYSQL_HOST'] +
+                'mysql+mysqldb://' + os.getenv('HBNB_MYSQL_USER') +
+                ':' + os.getenv('HBNB_MYSQL_PWD') +
+                '@' + os.getenv('HBNB_MYSQL_HOST') +
                 ':3306/' +
-                os.environ['HBNB_MYSQL_DB'],
+                os.getenv('HBNB_MYSQL_DB'),
                 pool_pre_ping=True)
 
         try:
-            if os.environ['HBNB_ENV'] == "test":
+            if os.getenv('HBNB_ENV') == "test":
                 Base.metadata.drop_all(self.__engine)
         except KeyError:
             pass
@@ -72,3 +72,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(
                 sessionmaker(bind=self.__engine, expire_on_commit=False))
+
+    def close(self):
+        '''close session'''
+        self.__session.close()

@@ -7,26 +7,20 @@ import models
 from sqlalchemy.orm import relationship, backref
 import os
 
-store = 'HBNB_TYPE_STORAGE'
-if store in os.environ.keys() and os.environ['HBNB_TYPE_STORAGE'] == 'db':
-    class State(BaseModel, Base):
-        """ State class """
 
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        cities = relationship(
-                "City", backref="state", cascade='all, delete')
+class State(BaseModel, Base):
+    """ State class """
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="states", cascade='delete')
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-else:
-    class State(BaseModel):
-        name=""
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
+            '''list of all related city objects'''
             all_cities = models.storage.all("City")
             tmp = []
-            for x in all_cities:
-                if all_cities[x].state_id == self.id:
-                    tmp.append(all_cities[x])
+            for x in all_cities.values():
+                if x.state_id == self.id:
+                    tmp.append(x)
             return tmp
