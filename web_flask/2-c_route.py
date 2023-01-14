@@ -18,6 +18,7 @@ def hbnb():
 
 @app.route('/c/<text>',strict_slashes=False)
 def c_is_fun(text):
+    """Returns C followed by the value of text"""
     return 'C %s' %text.replace('_',' ')
 
 
