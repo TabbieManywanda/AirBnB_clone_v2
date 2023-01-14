@@ -8,3 +8,5 @@ app = Flask(__name__)
 def hello_hbnb():
     """Returns Hello"""
     return 'Hello HBNB!'
+if __name__ == '__main__':
+    app.run('0.0.0.0', 5000)
