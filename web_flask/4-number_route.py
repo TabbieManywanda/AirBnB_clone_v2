@@ -32,7 +32,7 @@ def python_is_fun(text):
 @app.route('/number/<n>', strict_slashes=False)
 def number(n):
     """Returns a n if its an int"""
-    if isinstance(int, n):
+    if type(n) is int:
         return '%d is a number' %n
 
 if __name__ == '__main__':
