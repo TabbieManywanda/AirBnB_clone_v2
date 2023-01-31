@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models import *
+from models.city import City
 from sqlalchemy import Column, Integer, String
 import models
 from sqlalchemy.orm import relationship, backref
