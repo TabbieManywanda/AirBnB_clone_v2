@@ -16,23 +16,24 @@ def hbnb():
     return 'HBNB'
 
 
-@app.route('/c/<text>',strict_slashes=False)
+@app.route('/c/<text>', strict_slashes=False)
 def c_is_fun(text):
     """Returns C followed by the value of text"""
-    return 'C %s' %text.replace('_', ' ')
+    return 'C %s' % text.replace('_', ' ')
 
 
-@app.route('/python/', defaults={'text':'is cool'})
-@app.route('/python/<text>',strict_slashes=False)
+@app.route('/python/', defaults={'text': 'is cool'})
+@app.route('/python/<text>', strict_slashes=False)
 def python_is_fun(text):
     """Returns python followed by the value of text"""
-    return 'Python %s' %text.replace('_', ' ')
+    return 'Python %s' % text.replace('_', ' ')
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     """Returns a n if its an int"""
-    return '%d is a number' %n
+    return '%d is a number' % n
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 5000)
